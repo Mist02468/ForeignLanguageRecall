@@ -3,6 +3,8 @@
 namespace Application\Model;
 
 use Zend\Db\TableGateway\TableGateway;
+use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Expression;
 
 class EnglishWordTable
 {
@@ -23,6 +25,32 @@ class EnglishWordTable
     {
         $id  = (int) $id;
         $rowset = $this->tableGateway->select(array('id' => $id));
+        $row = $rowset->current();
+        return $row;
+    }
+
+    public function getRandomEnglishWord($onlyCoreVocab = true)
+    {
+        $adapter = $this->tableGateway->getAdapter();
+        $sql     = new Sql($adapter);
+        $select  = $sql->select();
+        $select->from($this->tableGateway->getTable())
+               ->columns(array('num' => new Expression('COUNT(*)')));
+        if ($onlyCoreVocab === true) {
+            $select->where(array('isCoreVocab' => 1));
+        }
+
+        $stmt    = $sql->getSqlStringForSqlObject($select);
+        $results = $adapter->query($stmt, $adapter::QUERY_MODE_EXECUTE)->current()->getArrayCopy();
+        $num     = (int) $results['num'];
+
+        $offset = rand(0, $num - 1);
+
+        $rowset = $this->tableGateway->select(function ($select) use ($offset) {
+            $select->where(array('isCoreVocab' => 1));
+            $select->offset($offset);
+            $select->limit(1);
+        });
         $row = $rowset->current();
         return $row;
     }

@@ -17,6 +17,8 @@ class IndexController extends AbstractActionController
     //static home page
     public function indexAction()
     {
-        return new ViewModel();
+        $serviceManager = $this->getServiceLocator();
+        $englishWord    = $serviceManager->get('Application\Model\EnglishWordTable')->getRandomEnglishWord();
+        return new ViewModel(array('englishWord' => $englishWord));
     }
 }
