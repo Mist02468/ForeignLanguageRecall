@@ -3,9 +3,9 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        
+
         <!-- Tab Name -->
-        <?php echo $this->headTitle('Base Project') ?>
+        <?php echo $this->headTitle('Foreign Language Recall') ?>
 
         <!-- Metadata -->
         <?php echo $this->headMeta()
@@ -14,7 +14,7 @@
         ?>
 
         <!-- Tab Icon and Styles -->
-        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'href' => $this->basePath() . '/img/glyphicons-221-play-button-white.png'))
+        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'href' => $this->basePath() . '/img/glyphicons-195-question-sign-white.png'))
                         ->prependStylesheet($this->basePath() . '/css/style.css')
                         ->prependStylesheet($this->basePath() . '/css/bootstrap-theme.min.css')
                         ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css') ?>
@@ -32,7 +32,7 @@
             <div class="container">
                 <div class="navbar-header">
                     <!-- Navigation bar with link back to the home page, styled with a play button icon and the text Base Project-->
-                    <a class="navbar-brand" href="<?php echo $this->url('home') ?>"><span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>&nbsp;Base Project</a>
+                    <a class="navbar-brand" href="<?php echo $this->url('home') ?>"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;Foreign Language Recall</a>
                 </div>
             </div>
         </nav>
