@@ -49,7 +49,7 @@ function checkAnswer($englishWordId, $spanishToCheck, $serviceManager) {
     $result        = 'incorrect';
     $otherWords    = '';
     foreach ($spanishWords as $spanishWord) {
-        if ($spanishToCheck === $spanishWord) {
+        if (strtolower($spanishToCheck) === strtolower($spanishWord)) {
             $result = 'correct';
         } else {
             $otherWords .= ', ' . $spanishWord;

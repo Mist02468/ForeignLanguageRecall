@@ -9,4 +9,15 @@ h2 {
 
 .input-group {
     font-size: 14px !important;
+    margin-top: 15px;
+    margin-left: 30%;
+    margin-right: 30%;
+}
+
+.alert {
+    text-align: center;
+    display: inline-block;
+    padding: 0px 15px;
+    margin-bottom: 28px;
+    font-size: 16px;
 }
