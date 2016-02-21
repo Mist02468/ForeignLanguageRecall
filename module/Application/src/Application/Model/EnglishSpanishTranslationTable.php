@@ -19,6 +19,12 @@ class EnglishSpanishTranslationTable
         return $resultSet;
     }
 
+    public function fetchAllWithEnglishWordId($englishWord_id) {
+        $englishWord_id = (int) $englishWord_id;
+        $resultSet = $this->tableGateway->select(array('englishWord_id' => $englishWord_id));
+        return $resultSet;
+    }
+
     public function getEnglishSpanishTranslation($id)
     {
         $id  = (int) $id;

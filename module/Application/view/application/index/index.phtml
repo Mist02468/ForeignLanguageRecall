@@ -1,14 +1,16 @@
 <!--Homepage-->
 <div class="jumbotron">
     <!--Form to submit the user's spanish for the given english-->
-    <div class="alert alert-success" role="alert">...</div>
-    <div class="alert alert-danger" role="alert">...</div>
+    <?php if (is_null($this->result) === false) : ?>
+        <div class="alert <?php echo ($this->result === 'correct' ? 'alert-success' : 'alert-danger') ?>" role="alert"><?php echo $this->resultString ?></div>
+    <?php endif; ?>
     <form method="post">
         <!--Div with instructions-->
-        <h1>Word in English to Recall: <b><?php echo $this->englishWord->word ?></b></h1>
+        <h2>Word in English to Recall: <b><?php echo $this->englishWord->word . ($this->englishWord->type ? ' (' . $this->englishWord->type . ')' : '')?></b></h2>
         <!--Div with input group-->
         <div class="input-group" style="margin-top: 15px; margin-left: 20%; margin-right: 20%">
-            <input type="text" class="form-control" placeholder="Palabra en castellano...">
+            <input type="hidden" name="englishWordId" value=<?php echo $this->englishWord->id ?>>
+            <input type="text" spellcheck="false" class="form-control" name="spanishToCheck" placeholder="Palabra en castellano...">
             <!--Check button on the right of the input box-->
             <span class="input-group-btn">
                 <button class="btn btn-default" type="submit">Check!</button>
