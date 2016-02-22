@@ -7,7 +7,8 @@ class SpanishWord
     public $id;
     public $word;
     public $gender;
-    private $genderAssociation = array('feminine'  => 'la ', 'masculine' => 'el ');
+    private $genderAssociation = array('feminine'  => 'la ', 'masculine' => 'el ',
+                                       'feminine-plural'  => 'las ', 'masculine-plural' => 'los ');
 
     public function exchangeArray($data)
     {
@@ -21,6 +22,8 @@ class SpanishWord
             return array($this->word);
         } elseif ($this->gender === 'both') {
             return array('la ' . $this->word, 'el ' . $this->word);
+        } elseif ($this->gender === 'both-plural') {
+              return array('las ' . $this->word, 'los ' . $this->word);
         } else {
             return array($this->genderAssociation[$this->gender] . $this->word);
         }
