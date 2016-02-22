@@ -43,6 +43,7 @@ function checkAnswer($englishWordId, $spanishToCheck, $serviceManager) {
         $spanishWord     = $spanishWordTable->getSpanishWord($translation->spanishWord_id);
         $spanishWords    = array_merge($spanishWords, $spanishWord->toStrings());
     }
+    $spanishWords = array_unique($spanishWords);
 
     $resultVerbage = array('correct'   => array('Correct! ', ' also translates to: '),
                            'incorrect' => array('Incorrect. ', ' translates to: '));
@@ -55,6 +56,14 @@ function checkAnswer($englishWordId, $spanishToCheck, $serviceManager) {
             $otherWords .= ', ' . $spanishWord;
         }
     }
+
+    if ($result === 'correct') {
+        $englishWord->numTimesCorrectlyTranslated++;
+    } else {
+        $englishWord->numTimesIncorrectlyTranslated++;
+    }
+    $englishWordTable->saveEnglishWord($englishWord);
+
     $otherWords   = substr($otherWords, 2);
     $resultString = $resultVerbage[$result][0] . (!empty($otherWords) ? ucfirst($englishWord->word) . $resultVerbage[$result][1] . $otherWords : '');
 
