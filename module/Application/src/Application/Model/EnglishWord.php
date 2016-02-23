@@ -2,6 +2,7 @@
 
 namespace Application\Model;
 
+//Model for the englishword database table, each has an id, word, type (ex. n, v, adj), numTimesCorrectlyTranslated (defaults to 0), numTimesIncorrectlyTranslated (defaults to 0), and isCoreVocab (defaults to false/0)
 class EnglishWord
 {
     public $id;

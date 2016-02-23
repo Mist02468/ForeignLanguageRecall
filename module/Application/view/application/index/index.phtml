@@ -1,14 +1,22 @@
 <!--Homepage-->
+
+<!--Don't put top padding if the result alert is showing-->
 <div class="jumbotron" style="text-align: center<?php if (is_null($this->result) === false) { echo '; padding-top: 0px;'; } ?>">
-    <!--Form to submit the user's spanish for the given english-->
+
+    <!--If result is not null, show the result alert-->
     <?php if (is_null($this->result) === false) : ?>
+        <!--If the result is correct, the alert-success class should be used (green), otherwise alert-danger (red)-->
         <div class="alert <?php echo ($this->result === 'correct' ? 'alert-success' : 'alert-danger') ?>" role="alert"><?php echo $this->resultString ?></div>
     <?php endif; ?>
+
+    <!--Form to submit the user's spanish for the given english-->
     <form method="post">
-        <!--Div with instructions-->
+        <!--Div with instructions, showing the english word and type-->
         <h2>Word in English to Recall: <b><?php echo $this->englishWord->word . ($this->englishWord->type ? ' (' . $this->englishWord->type . ')' : '')?></b></h2>
+
         <!--Div with input group-->
         <div class="input-group">
+            <!--Post request will include the english word's id (hidden) and the spanish to check (input by the user)-->
             <input type="hidden" name="englishWordId" value=<?php echo $this->englishWord->id ?>>
             <input id="spanishTextBox" type="text" spellcheck="false" class="form-control" name="spanishToCheck" placeholder="Palabra en castellano..." autofocus>
             <!--Check button on the right of the input box-->
@@ -21,6 +29,7 @@
 
 <script>
 
+//accented (umlaut) versions of the english a, e, i, o, u, and n characters
 var accents = {a: String.fromCharCode(225),
                e: String.fromCharCode(233),
                i: String.fromCharCode(237),
@@ -29,11 +38,15 @@ var accents = {a: String.fromCharCode(225),
                n: String.fromCharCode(241)};
 
 $("#spanishTextBox").on("keydown", function(event) {
+    //if the keydown is the right arrow
     if (event.which == 39) {
-        var currSpanishText = $("#spanishTextBox").val();
-        var lastLetterIndex = currSpanishText.length - 1;
+        var currSpanishText = $("#spanishTextBox").val(); //user's current input value
+        var lastLetterIndex = currSpanishText.length - 1; //last letter of that value
+        //if that last letter is accentable
         if (currSpanishText[lastLetterIndex] in accents) {
+            //substring to exclude the current last letter and concatenate the accented version of that last letter
             newSpanishText = currSpanishText.substring(0, lastLetterIndex).concat(accents[currSpanishText[lastLetterIndex]]);
+            //set this new value in the inpu box
             $("#spanishTextBox").val(newSpanishText);
         }
     }

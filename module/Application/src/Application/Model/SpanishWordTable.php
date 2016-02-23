@@ -27,6 +27,7 @@ class SpanishWordTable
         return $row;
     }
 
+    //select (and could possibly return multiple) by word and optionally gender
     public function getSpanishWordsByWordAndGender($word, $gender = null)
     {
         $word = (string) $word;

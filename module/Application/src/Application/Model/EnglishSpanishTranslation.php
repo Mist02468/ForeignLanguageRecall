@@ -2,6 +2,7 @@
 
 namespace Application\Model;
 
+//Model for the englishSpanishtranslation database table, each has an id and foreign keys to the english word and spanish word it connects as a translation
 class EnglishSpanishTranslation
 {
     public $id;

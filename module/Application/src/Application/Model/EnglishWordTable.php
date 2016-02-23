@@ -29,25 +29,33 @@ class EnglishWordTable
         return $row;
     }
 
+    //Utility function to return a random english word, by default only from those marked with isCoreVocab
     public function getRandomEnglishWord($onlyCoreVocab = true)
     {
+        //need more flexibility, so creating my own Sql object
         $adapter = $this->tableGateway->getAdapter();
         $sql     = new Sql($adapter);
         $select  = $sql->select();
+
+        //create a select count(*) on this table, where isCoreVocab = 1 if $onlyCoreVocab is true
         $select->from($this->tableGateway->getTable())
                ->columns(array('num' => new Expression('COUNT(*)')));
         if ($onlyCoreVocab === true) {
             $select->where(array('isCoreVocab' => 1));
         }
-
+        //execute that select and store the result as $num
         $stmt    = $sql->getSqlStringForSqlObject($select);
         $results = $adapter->query($stmt, $adapter::QUERY_MODE_EXECUTE)->current()->getArrayCopy();
         $num     = (int) $results['num'];
 
+        //randomly choose a number between 0 and $num-1 inclusive
         $offset = rand(0, $num - 1);
 
-        $rowset = $this->tableGateway->select(function ($select) use ($offset) {
-            $select->where(array('isCoreVocab' => 1));
+        //select the randomly chosen english word, using offset and limit
+        $rowset = $this->tableGateway->select(function ($select) use ($offset, $onlyCoreVocab) {
+            if ($onlyCoreVocab === true) {
+                $select->where(array('isCoreVocab' => 1));
+            }
             $select->offset($offset);
             $select->limit(1);
         });
@@ -55,6 +63,7 @@ class EnglishWordTable
         return $row;
     }
 
+    //select (and could possibly return multiple) by word and type
     public function getEnglishWordsByWordAndType($word, $type = null)
     {
         $word = (string) $word;
