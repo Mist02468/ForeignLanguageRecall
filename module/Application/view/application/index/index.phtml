@@ -1,12 +1,11 @@
 <!--Homepage-->
 
-<!--Don't put top padding if the result alert is showing-->
-<div class="jumbotron" style="text-align: center<?php if (is_null($this->result) === false) { echo '; padding-top: 0px;'; } ?>">
+<!--Turn padding off if the result alert is showing on the page (only shows when result is correct)-->
+<div class="jumbotron" style="text-align: center<?php if ($this->result === 'correct') { echo '; padding-top: 0px;'; } ?>">
 
-    <!--If result is not null, show the result alert-->
-    <?php if (is_null($this->result) === false) : ?>
-        <!--If the result is correct, the alert-success class should be used (green), otherwise alert-danger (red)-->
-        <div class="alert <?php echo ($this->result === 'correct' ? 'alert-success' : 'alert-danger') ?>" role="alert"><?php echo $this->resultString ?></div>
+    <!--If result is correct, show the correct result alert-->
+    <?php if ($this->result === 'correct') : ?>
+        <div class="alert alert-success" role="alert"><?php echo $this->resultString ?></div>
     <?php endif; ?>
 
     <!--Form to submit the user's spanish for the given english-->
@@ -27,29 +26,113 @@
     </form>
 </div>
 
+<!--HTML for the incorrect result popup-->
+<?php if ($this->result === 'incorrect') : ?>
+    <div id="incorrect-popup" class="white-popup-block mfp-hide">
+        <!--Show the incorrect result alert-->
+        <div class="alert alert-danger popup-alert" role="alert"><?php echo $this->resultString ?></div>
+        <br> <!--Separate these inline-block elements-->
+        <!--Div with instructions, showing the english word and type-->
+        <h2>Try Again: <b><?php echo $this->lastEnglishWord->word . ($this->lastEnglishWord->type ? ' (' . $this->lastEnglishWord->type . ')' : '')?></b></h2>
+
+        <!--Div with input group-->
+        <div class="input-group">
+            <input id="try-again-spanishTextBox" type="text" spellcheck="false" class="form-control" name="spanishToCheck" placeholder="Palabra en castellano..." autofocus>
+            <!--Check button on the right of the input box-->
+            <span class="input-group-btn">
+                <button id="try-again-button" class="btn btn-default popup-button" type="button">Check!</button>
+            </span>
+        </div>
+    </div>
+<?php endif; ?>
+
 <script>
 
-//accented (umlaut) versions of the english a, e, i, o, u, and n characters
-var accents = {a: String.fromCharCode(225),
-               e: String.fromCharCode(233),
-               i: String.fromCharCode(237),
-               o: String.fromCharCode(243),
-               u: String.fromCharCode(250),
-               n: String.fromCharCode(241)};
+$(document).ready(function() {
 
-$("#spanishTextBox").on("keydown", function(event) {
-    //if the keydown is the right arrow
-    if (event.which == 39) {
-        var currSpanishText = $("#spanishTextBox").val(); //user's current input value
-        var lastLetterIndex = currSpanishText.length - 1; //last letter of that value
-        //if that last letter is accentable
-        if (currSpanishText[lastLetterIndex] in accents) {
-            //substring to exclude the current last letter and concatenate the accented version of that last letter
-            newSpanishText = currSpanishText.substring(0, lastLetterIndex).concat(accents[currSpanishText[lastLetterIndex]]);
-            //set this new value in the inpu box
-            $("#spanishTextBox").val(newSpanishText);
-        }
-    }
+  //accented (umlaut) versions of the english a, e, i, o, u, and n characters
+  var accents = {a: String.fromCharCode(225),
+                 e: String.fromCharCode(233),
+                 i: String.fromCharCode(237),
+                 o: String.fromCharCode(243),
+                 u: String.fromCharCode(250),
+                 n: String.fromCharCode(241)};
+
+  //utility function for right arrow accenting event handling
+  function addAccentOrUmlaut (event) {
+      //if the keydown is the right arrow
+      if (event.which == 39) {
+          var targetId = $(event.target)[0].id; //determine which input box to act upon (main page versus popup)
+          var currSpanishText = $("#".concat(targetId)).val(); //user's current input value
+          var lastLetterIndex = currSpanishText.length - 1; //last letter of that value
+          //if that last letter is accentable
+          if (currSpanishText[lastLetterIndex] in accents) {
+              //substring to exclude the current last letter and concatenate the accented version of that last letter
+              newSpanishText = currSpanishText.substring(0, lastLetterIndex).concat(accents[currSpanishText[lastLetterIndex]]);
+              //set this new value in the input box
+              $("#".concat(targetId)).val(newSpanishText);
+          }
+      }
+  };
+
+  $("#spanishTextBox").on("keydown", addAccentOrUmlaut); //set the accenting event handler for the main page's input box
+
+  //script for creating and controlling the popup when the result was incorrect
+  <?php if ($this->result === 'incorrect') : ?>
+      //get the correct translations (from resultString) in a javascript array form
+      var correctTranslations = '<?php echo $this->resultString ?>'.split(',');
+      //remove the resultString message from the first array element
+      correctTranslations[0] = correctTranslations[0].substr(correctTranslations[0].indexOf(': ') + ': '.length);
+
+      //initialize and open the popup
+      $.magnificPopup.open({
+        items: {
+          src: $('#incorrect-popup') //jQuery object with the above incorrect result popup HTML
+        },
+        type: 'inline',
+        preloader: false,
+        focus: '#try-again-spanishTextBox',
+        modal: true,
+        closeBtnInside: false,
+        showCloseBtn: false
+      });
+      //set the accenting event handler for the popup's input box
+      $('#try-again-spanishTextBox').on("keydown", addAccentOrUmlaut);
+      //popup's check button event handler, only closes the popup if you type one of the correct translations
+      $(".popup-button").on("click", function (event) {
+		      event.preventDefault();
+          //$.inArray returns the index, -1 if it is not in the array
+          if ($.inArray($("#try-again-spanishTextBox").val(), correctTranslations) != -1) {
+              $(document).off("keydown"); //remove the popup's enter button event handler
+              $.magnificPopup.close(); //close the popup
+              $('#spanishTextBox').focus(); //give focus back to the main page's input box
+          } else {
+              //change the border color to red if you still typed an incorrect translation
+              $("#try-again-spanishTextBox").css('border-color', '#a94442');
+          }
+	    });
+      //popup's enter button event handler, triggers the popup's check button's click event
+      $(document).on("keydown", function (event) {
+          //if the keydown is enter
+          if (event.which == 13) {
+              $(".popup-button").trigger("click");
+              return false; //so the main page's button is not triggered
+          }
+      });
+
+      //set the width of the popup, by finding the maximum width of its children elements (and adding room for the padding)
+      var popup    = $('#incorrect-popup');
+      var maxWidth = 0;
+      popup.children().each(function() {
+                                          //get the outerWidth (including margin) of the child element
+                                          width = parseInt($(this).outerWidth(true));
+                                          if (width > maxWidth) {
+                                              maxWidth = width;
+                                          }
+                                        });
+      popup.width(maxWidth + (parseInt(popup.css('padding')) * 2)); //set the popup's width
+  <?php endif; ?>
+
 });
 
 </script>

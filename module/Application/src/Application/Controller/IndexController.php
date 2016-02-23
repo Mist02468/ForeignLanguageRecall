@@ -18,17 +18,21 @@ class IndexController extends AbstractActionController
     {
         $serviceManager = $this->getServiceLocator();
         //defaults, these will not get set when the page is first loaded (before an answer has been submitted)
-        $result         = null;
-        $resultString   = null;
+        $result          = null;
+        $resultString    = null;
+        $lastEnglishWord = null;
 
         //if this is a post request (after an answer has been submitted)
         if ($this->params()->fromPost('englishWordId') && $this->params()->fromPost('spanishToCheck')) {
-            list($result, $resultString) = checkAnswer($this->params()->fromPost('englishWordId'), $this->params()->fromPost('spanishToCheck'), $serviceManager);
+            list($result, $resultString, $lastEnglishWord) = checkAnswer($this->params()->fromPost('englishWordId'),
+                                                                         $this->params()->fromPost('spanishToCheck'),
+                                                                         $serviceManager);
         }
 
         //either way, get a new random english word, to give to the view along with the result and resultString
         $englishWord = $serviceManager->get('Application\Model\EnglishWordTable')->getRandomEnglishWord();
-        return new ViewModel(array('englishWord' => $englishWord, 'result' => $result, 'resultString' => $resultString));
+        return new ViewModel(array('englishWord' => $englishWord,
+                                   'result' => $result, 'resultString' => $resultString, 'lastEnglishWord' => $lastEnglishWord));
     }
 }
 
@@ -78,5 +82,5 @@ function checkAnswer($englishWordId, $spanishToCheck, $serviceManager) {
     //combine the strings, the Correct/Incorrect message as well as the (other) answers, to create the $resultString
     $resultString = $resultVerbage[$result][0] . (!empty($otherWords) ? ucfirst($englishWord->word) . $resultVerbage[$result][1] . $otherWords : '');
 
-    return array($result, $resultString);
+    return array($result, $resultString, $englishWord);
 }

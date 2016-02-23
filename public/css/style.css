@@ -21,3 +21,34 @@ h2 {
     margin-bottom: 28px;
     font-size: 16px;
 }
+
+#incorrect-popup {
+    background-color: white;
+    text-align: center;
+    position: relative;
+    padding: 20px;
+    margin: auto;
+}
+
+#incorrect-popup h2 {
+    display: inline-block;
+}
+
+#incorrect-popup .input-group {
+    margin: 0px;
+    display: inline-flex;
+    text-align: center;
+}
+
+#try-again-spanishTextBox {
+    width: 200px;
+}
+
+.popup-alert {
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+.mfp-bg {
+    opacity: 0.8;
+}
