@@ -98,14 +98,20 @@ $(document).ready(function() {
       });
       //set the accenting event handler for the popup's input box
       $('#try-again-spanishTextBox').on("keydown", addAccentOrUmlaut);
+      var correctPopupTimes = 0; //keep track, want the user to type correctly 2x, to counter the one time they typed it incorrectly
       //popup's check button event handler, only closes the popup if you type one of the correct translations
       $(".popup-button").on("click", function (event) {
 		      event.preventDefault();
           //$.inArray returns the index, -1 if it is not in the array
           if ($.inArray($("#try-again-spanishTextBox").val(), correctTranslations) != -1) {
-              $(document).off("keydown"); //remove the popup's enter button event handler
-              $.magnificPopup.close(); //close the popup
-              $('#spanishTextBox').focus(); //give focus back to the main page's input box
+              correctPopupTimes++;
+              $("#try-again-spanishTextBox").css('border-color', '#3c763d');
+              $("#try-again-spanishTextBox").val('');
+              if (correctPopupTimes >= 2) {
+                  $(document).off("keydown"); //remove the popup's enter button event handler
+                  $.magnificPopup.close(); //close the popup
+                  $('#spanishTextBox').focus(); //give focus back to the main page's input box
+              }
           } else {
               //change the border color to red if you still typed an incorrect translation
               $("#try-again-spanishTextBox").css('border-color', '#a94442');
