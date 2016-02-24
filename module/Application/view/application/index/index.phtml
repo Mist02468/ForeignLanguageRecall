@@ -80,7 +80,7 @@ $(document).ready(function() {
   //script for creating and controlling the popup when the result was incorrect
   <?php if ($this->result === 'incorrect') : ?>
       //get the correct translations (from resultString) in a javascript array form
-      var correctTranslations = '<?php echo $this->resultString ?>'.split(',');
+      var correctTranslations = '<?php echo $this->resultString ?>'.split(', ');
       //remove the resultString message from the first array element
       correctTranslations[0] = correctTranslations[0].substr(correctTranslations[0].indexOf(': ') + ': '.length);
 
