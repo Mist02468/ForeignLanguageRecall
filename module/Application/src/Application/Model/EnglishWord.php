@@ -17,8 +17,8 @@ class EnglishWord
         $this->id                            = (!empty($data['id']))                            ? $data['id'] : null;
         $this->word                          = (!empty($data['word']))                          ? $data['word'] : null;
         $this->type                          = (!empty($data['type']))                          ? $data['type'] : null;
-        $this->numTimesCorrectlyTranslated   = (!empty($data['numTimesCorrectlyTranslated']))   ? $data['numTimesCorrectlyTranslated'] : null;
-        $this->numTimesIncorrectlyTranslated = (!empty($data['numTimesIncorrectlyTranslated'])) ? $data['numTimesIncorrectlyTranslated'] : null;
+        $this->numTimesCorrectlyTranslated   = (!empty($data['numTimesCorrectlyTranslated']) || ($data['numTimesCorrectlyTranslated'] == '0'))     ? $data['numTimesCorrectlyTranslated'] : null;
+        $this->numTimesIncorrectlyTranslated = (!empty($data['numTimesIncorrectlyTranslated']) || ($data['numTimesIncorrectlyTranslated'] == '0')) ? $data['numTimesIncorrectlyTranslated'] : null;
         $this->isCoreVocab                   = (!empty($data['isCoreVocab']))                   ? $data['isCoreVocab'] : null;
     }
 }

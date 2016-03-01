@@ -11,7 +11,7 @@
     <!--Form to submit the user's spanish for the given english-->
     <form method="post">
         <!--Div with instructions, showing the english word and type-->
-        <h2>Word in English to Recall: <b><?php echo $this->englishWord->word . ($this->englishWord->type ? ' (' . $this->englishWord->type . ')' : '')?></b></h2>
+        <h2>Word in English to Recall: <b><?php echo $this->englishWord->word . ($this->englishWord->type ? ' (' . $this->englishWord->type . ')' : '') . ' [<span style="color:green;">' . $this->englishWord->numTimesCorrectlyTranslated . '</span>/' . ($this->englishWord->numTimesCorrectlyTranslated + $this->englishWord->numTimesIncorrectlyTranslated) . ']'?></b></h2>
 
         <!--Div with input group-->
         <div class="input-group">

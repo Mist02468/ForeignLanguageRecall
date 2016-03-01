@@ -32125,10 +32125,10 @@ Ottoman Empire,prop,Imperio Otomano{m}, /??t?m?n ??mpa??/ (Ottoman Empire)
 Ottoman Turkish,prop,turco otomano, (the variety of the Turkish language that was used as the administrative and literary language of the Ottoman Empire)
 Ouagadougou,prop,Uagadugú, /?w?????du??u?/ (capital of Burkina Faso)
 ouch,interj,"ay,uy", /?a?t?/ (expression of one's own physical pain)
-ought,v,deberin either indicative or conditional., (indicating advisability or prudence)
-ought,v,deberin either indicative or conditional., (indicating desirability)
-ought,v,deberin either indicative or conditional., (indicating likelihood or probability)
-ought,v,deberin either indicative or conditional., /?t/ (indicating duty or obligation)
+ought,v,deber
+ought,v,deber
+ought,v,deber
+ought,v,deber
 Ouija,n,"güija,ouija"," /?wi?d??/ (a board with letters of the alphabet and ""yes"" and ""no"")"
 ounce,n,onza{f}, /a?ns/ (28.3495 g)
 our,determiner,"nuestro,nuestra{f},nuestros{m-p},nuestras{f-p}", /??(?)/ (belonging to us)
@@ -40380,8 +40380,6 @@ Shakespeare,prop,Shakespeare, (English playwright)
 Shakespearean,adj,shakespeariano, /?e?k?spi?i?n/ (pertaining to Shakespeare or his works)
 shale,n,"esquisto{m},pizarra{f}", (sedimentary rock)
 shale,n,"cáscara,vaina"," (shell, husk, cod, pod)"
-shall,v,shallfollowed by the infinitive is translated using the future tense, /??æl/ (indicating the simple future tense)
-shall,v, I shall sing tomorrow -Cantaré mañana, (indicating the simple future tense)
 shallot,n,chalota{f}, /??æl?t/ (vegetable in the onion family)
 shallow,adj,"poco profundo{m},superficial", /??æl.o?/ (having little depth and significantly less deep than wide)
 shallow,adj,superficial, (concerned mainly with superficial matters)
